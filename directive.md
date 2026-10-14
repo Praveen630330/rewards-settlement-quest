@@ -113,7 +113,7 @@ The candidate's decisions:
 - choosing Failure A after reviewing the ranking walk-through
 - reviewing and owning the final result
 
-Seven corrections are logged with how each was found. The most important:
+Eight corrections are logged with how each was found. The most important:
 - **C2.** The first M4 mutant was *equivalent*: it could never fail. It was replaced with a real R5 risk (notify before payout), which TC14 now catches.
 - **C3.** The M2 survivor was analysed rather than hidden.
 - **C6.** One faulty-build figure was measured before it was stated, rather than assumed.
