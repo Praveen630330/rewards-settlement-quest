@@ -1,0 +1,12 @@
+[project]
+name = "rewards-settlement-quest"
+version = "1.0.0"
+description = "Regression fixture for a fictional weekly rewards settlement (synthetic data only)"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = [
+    "regression_a: guards DEF-001 (retry after partial failure double-pays)",
+]

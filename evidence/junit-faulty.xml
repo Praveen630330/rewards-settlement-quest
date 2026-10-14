@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="17" time="0.086" timestamp="2026-10-14T12:25:05.996612+05:30" hostname="redacted"><testcase classname="tests.test_settlement" name="test_tc00_window_is_previous_monday_to_monday_derived_from_scheduled_run" time="0.000" /><testcase classname="tests.test_settlement" name="test_tc16_window_rejects_run_that_is_not_tuesday_0900_utc" time="0.000" /><testcase classname="tests.test_settlement" name="test_tc01_happy_path_three_tasks_pay_30_and_notify_each" time="0.001" /><testcase classname="tests.test_settlement" name="test_tc02_lower_boundary_monday_0000_utc_is_included" time="0.000" /><testcase classname="tests.test_settlement" name="test_tc03_upper_boundary_monday_0000_utc_is_excluded_and_paid_next_week" time="0.000" /><testcase classname="tests.test_settlement" name="test_tc04_last_microsecond_before_upper_boundary_is_included" time="0.001" /><testcase classname="tests.test_settlement" name="test_tc05_sast_local_monday_0130_is_sunday_2330_utc_and_included" time="0.001" /><testcase classname="tests.test_settlement" name="test_tc06_sast_local_monday_0100_is_sunday_2300_utc_previous_week_and_excluded" time="0.000" /><testcase classname="tests.test_settlement" name="test_tc07_london_bst_monday_0030_is_sunday_2330_utc_and_included" time="0.004" /><testcase classname="tests.test_settlement" name="test_tc08_timestamp_without_timezone_rejects_run_before_any_payout" time="0.001" /><testcase classname="tests.test_settlement" name="test_tc09_non_completed_task_in_window_is_not_paid" time="0.000" /><testcase classname="tests.test_settlement" name="test_tc15_previous_week_tasks_resent_in_next_feed_are_not_paid_again" time="0.001" /><testcase classname="tests.test_settlement" name="test_tc10_duplicate_task_id_in_input_is_paid_once" time="0.001"><failure message="AssertionError: expected 10 credits, got 20&#10;assert 20 == 10&#10; +  where 20 = total_credits()&#10; +    where total_credits = &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CA17C0&gt;.total_credits&#10; +      where &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CA17C0&gt; = SettlementContext(ledger=&lt;rewards.ledger.InMemoryLedger object at 0x0000022798CA17C0&gt;, notifier=&lt;rewards.notifier.FakeNotifier object at 0x0000022798CA1A90&gt;, outbox=&lt;rewards.notifier.NotificationOutbox object at 0x0000022798CA05F0&gt;).ledger">settle = &lt;function settle at 0x00000227969BE560&gt;
+ctx = SettlementContext(ledger=&lt;rewards.ledger.InMemoryLedger object at 0x0000022798CA17C0&gt;, notifier=&lt;rewards.notifier.FakeNotifier object at 0x0000022798CA1A90&gt;, outbox=&lt;rewards.notifier.NotificationOutbox object at 0x0000022798CA05F0&gt;)
+
+    @pytest.mark.regression_a
+    def test_tc10_duplicate_task_id_in_input_is_paid_once(settle, ctx):
+        t1 = task("T1", datetime(2026, 10, 6, 8, 15, tzinfo=UTC))
+        settle([t1, t1], RUN, ctx)
+&gt;       assert ctx.ledger.total_credits() == 10, f"expected 10 credits, got {ctx.ledger.total_credits()}"
+E       AssertionError: expected 10 credits, got 20
+E       assert 20 == 10
+E        +  where 20 = total_credits()
+E        +    where total_credits = &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CA17C0&gt;.total_credits
+E        +      where &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CA17C0&gt; = SettlementContext(ledger=&lt;rewards.ledger.InMemoryLedger object at 0x0000022798CA17C0&gt;, notifier=&lt;rewards.notifier.FakeNotifier object at 0x0000022798CA1A90&gt;, outbox=&lt;rewards.notifier.NotificationOutbox object at 0x0000022798CA05F0&gt;).ledger
+
+tests\test_settlement.py:130: AssertionError</failure></testcase><testcase classname="tests.test_settlement" name="test_tc11_rerun_after_successful_run_pays_and_notifies_nothing_new" time="0.001"><failure message="AssertionError: expected 30 credits, got 60&#10;assert 60 == 30&#10; +  where 60 = total_credits()&#10; +    where total_credits = &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CA25D0&gt;.total_credits&#10; +      where &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CA25D0&gt; = SettlementContext(ledger=&lt;rewards.ledger.InMemoryLedger object at 0x0000022798CA25D0&gt;, notifier=&lt;rewards.notifier.FakeNotifier object at 0x0000022798CA26C0&gt;, outbox=&lt;rewards.notifier.NotificationOutbox object at 0x0000022798CA27B0&gt;).ledger">settle = &lt;function settle at 0x00000227969BE560&gt;
+ctx = SettlementContext(ledger=&lt;rewards.ledger.InMemoryLedger object at 0x0000022798CA25D0&gt;, notifier=&lt;rewards.notifier.FakeNotifier object at 0x0000022798CA26C0&gt;, outbox=&lt;rewards.notifier.NotificationOutbox object at 0x0000022798CA27B0&gt;)
+
+    @pytest.mark.regression_a
+    def test_tc11_rerun_after_successful_run_pays_and_notifies_nothing_new(settle, ctx):
+        settle(three_tasks(), RUN, ctx)
+        second = settle(three_tasks(), RUN, ctx)
+&gt;       assert ctx.ledger.total_credits() == 30, f"expected 30 credits, got {ctx.ledger.total_credits()}"
+E       AssertionError: expected 30 credits, got 60
+E       assert 60 == 30
+E        +  where 60 = total_credits()
+E        +    where total_credits = &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CA25D0&gt;.total_credits
+E        +      where &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CA25D0&gt; = SettlementContext(ledger=&lt;rewards.ledger.InMemoryLedger object at 0x0000022798CA25D0&gt;, notifier=&lt;rewards.notifier.FakeNotifier object at 0x0000022798CA26C0&gt;, outbox=&lt;rewards.notifier.NotificationOutbox object at 0x0000022798CA27B0&gt;).ledger
+
+tests\test_settlement.py:138: AssertionError</failure></testcase><testcase classname="tests.test_settlement" name="test_tc12_notification_failure_keeps_all_payouts_and_leaves_notification_pending" time="0.001"><failure message="AssertionError: expected 30 credits, got 20&#10;assert 20 == 30&#10; +  where 20 = total_credits()&#10; +    where total_credits = &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CAB150&gt;.total_credits&#10; +      where &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CAB150&gt; = SettlementContext(ledger=&lt;rewards.ledger.InMemoryLedger object at 0x0000022798CAB150&gt;, notifier=&lt;rewards.notifier.FakeNotifier object at 0x0000022798CAB310&gt;, outbox=&lt;rewards.notifier.NotificationOutbox object at 0x0000022798CAB4D0&gt;).ledger">settle = &lt;function settle at 0x00000227969BE560&gt;
+ctx = SettlementContext(ledger=&lt;rewards.ledger.InMemoryLedger object at 0x0000022798CAB150&gt;, notifier=&lt;rewards.notifier.FakeNotifier object at 0x0000022798CAB310&gt;, outbox=&lt;rewards.notifier.NotificationOutbox object at 0x0000022798CAB4D0&gt;)
+
+    @pytest.mark.regression_a
+    def test_tc12_notification_failure_keeps_all_payouts_and_leaves_notification_pending(settle, ctx):
+        ctx.notifier.fail_for = {"T2"}
+        result = settle(three_tasks(), RUN, ctx)
+&gt;       assert ctx.ledger.total_credits() == 30, f"expected 30 credits, got {ctx.ledger.total_credits()}"
+E       AssertionError: expected 30 credits, got 20
+E       assert 20 == 30
+E        +  where 20 = total_credits()
+E        +    where total_credits = &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CAB150&gt;.total_credits
+E        +      where &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CAB150&gt; = SettlementContext(ledger=&lt;rewards.ledger.InMemoryLedger object at 0x0000022798CAB150&gt;, notifier=&lt;rewards.notifier.FakeNotifier object at 0x0000022798CAB310&gt;, outbox=&lt;rewards.notifier.NotificationOutbox object at 0x0000022798CAB4D0&gt;).ledger
+
+tests\test_settlement.py:147: AssertionError</failure></testcase><testcase classname="tests.test_settlement" name="test_tc13_retry_after_notification_failure_does_not_pay_twice" time="0.001"><failure message="AssertionError: expected 30 credits, got 50&#10;assert 50 == 30&#10; +  where 50 = total_credits()&#10; +    where total_credits = &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CABA10&gt;.total_credits&#10; +      where &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CABA10&gt; = SettlementContext(ledger=&lt;rewards.ledger.InMemoryLedger object at 0x0000022798CABA10&gt;, notifier=&lt;rewards.notifier.FakeNotifier object at 0x0000022798CABBD0&gt;, outbox=&lt;rewards.notifier.NotificationOutbox object at 0x0000022798CABD90&gt;).ledger">settle = &lt;function settle at 0x00000227969BE560&gt;
+ctx = SettlementContext(ledger=&lt;rewards.ledger.InMemoryLedger object at 0x0000022798CABA10&gt;, notifier=&lt;rewards.notifier.FakeNotifier object at 0x0000022798CABBD0&gt;, outbox=&lt;rewards.notifier.NotificationOutbox object at 0x0000022798CABD90&gt;)
+
+    @pytest.mark.regression_a
+    def test_tc13_retry_after_notification_failure_does_not_pay_twice(settle, ctx):
+        """Core DEF-001 reproduction: notification fails -&gt; run retried -&gt; must not double-pay."""
+        ctx.notifier.fail_for = {"T2"}
+        settle(three_tasks(), RUN, ctx)
+        ctx.notifier.fail_for = set()  # provider recovers
+        retry = settle(three_tasks(), RUN, ctx)
+&gt;       assert ctx.ledger.total_credits() == 30, f"expected 30 credits, got {ctx.ledger.total_credits()}"
+E       AssertionError: expected 30 credits, got 50
+E       assert 50 == 30
+E        +  where 50 = total_credits()
+E        +    where total_credits = &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CABA10&gt;.total_credits
+E        +      where &lt;rewards.ledger.InMemoryLedger object at 0x0000022798CABA10&gt; = SettlementContext(ledger=&lt;rewards.ledger.InMemoryLedger object at 0x0000022798CABA10&gt;, notifier=&lt;rewards.notifier.FakeNotifier object at 0x0000022798CABBD0&gt;, outbox=&lt;rewards.notifier.NotificationOutbox object at 0x0000022798CABD90&gt;).ledger
+
+tests\test_settlement.py:161: AssertionError</failure></testcase><testcase classname="tests.test_settlement" name="test_tc14_payout_failure_is_not_notified_and_retry_pays_it_once" time="0.001"><failure message="AssertionError: got RunStatus.FAILED&#10;assert &lt;RunStatus.FAILED: 'FAILED'&gt; == &lt;RunStatus.CO...AYOUT_ERRORS'&gt;&#10;  &#10;  - COMPLETED_WITH_PAYOUT_ERRORS&#10;  + FAILED">settle = &lt;function settle at 0x00000227969BE560&gt;
+ctx = SettlementContext(ledger=&lt;rewards.ledger.InMemoryLedger object at 0x0000022798C72A90&gt;, notifier=&lt;rewards.notifier.FakeNotifier object at 0x0000022798C72340&gt;, outbox=&lt;rewards.notifier.NotificationOutbox object at 0x0000022798C725B0&gt;)
+
+    @pytest.mark.regression_a
+    def test_tc14_payout_failure_is_not_notified_and_retry_pays_it_once(settle, ctx):
+        ctx.ledger.fail_for = {"T3"}
+        first = settle(three_tasks(), RUN, ctx)
+&gt;       assert first.status == RunStatus.COMPLETED_WITH_PAYOUT_ERRORS, f"got {first.status}"
+E       AssertionError: got RunStatus.FAILED
+E       assert &lt;RunStatus.FAILED: 'FAILED'&gt; == &lt;RunStatus.CO...AYOUT_ERRORS'&gt;
+E         
+E         - COMPLETED_WITH_PAYOUT_ERRORS
+E         + FAILED
+
+tests\test_settlement.py:171: AssertionError</failure></testcase></testsuite></testsuites>

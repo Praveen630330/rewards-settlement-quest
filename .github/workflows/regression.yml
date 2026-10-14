@@ -1,0 +1,58 @@
+name: settlement-regression
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  release-gate:
+    name: release-gate (fixed build must pass every case)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Full suite against fixed build
+        run: python -m pytest --impl=fixed -v --junitxml=junit-fixed.xml
+      - name: Regression cases must exist and not be skipped
+        run: |
+          count=$(python -m pytest --impl=fixed -m regression_a --collect-only -q | grep -c "::test_")
+          echo "regression_a cases collected: $count"
+          test "$count" -ge 5
+      - name: Mutation check (suite catches partial fixes)
+        run: python scripts/mutation_check.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: junit-fixed
+          path: junit-fixed.xml
+
+  prove-regression:
+    name: prove-regression (faulty build must be rejected)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Regression cases must FAIL against the faulty reference build
+        run: |
+          set +e
+          python -m pytest --impl=faulty -m regression_a -v --junitxml=junit-faulty.xml
+          code=$?
+          set -e
+          if [ "$code" -eq 1 ]; then
+            echo "OK: regression suite rejects the faulty build (pytest exit 1)."
+          else
+            echo "ERROR: expected pytest exit 1 (tests failed) against faulty build, got $code."
+            exit 1
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: junit-faulty
+          path: junit-faulty.xml

@@ -1,0 +1,8 @@
+{
+  "_label": "SYNTHETIC test data for the fictional rewards settlement run of Tue 2026-10-13 09:00 UTC (window [2026-10-05T00:00Z, 2026-10-12T00:00Z)). No real users or tasks.",
+  "tasks": [
+    {"task_id": "T1", "user_id": "user-a", "status": "completed", "completed_at": "2026-10-06T08:15:00+00:00"},
+    {"task_id": "T2", "user_id": "user-b", "status": "completed", "completed_at": "2026-10-08T14:00:00+02:00"},
+    {"task_id": "T3", "user_id": "user-a", "status": "completed", "completed_at": "2026-10-10T21:45:00+00:00"}
+  ]
+}
