@@ -22,8 +22,7 @@
 | C5 | Captured evidence (`junit-*.xml`, pytest output) | Contained the local machine hostname and user path (internal info) | Grep of evidence before commit | Redacted to `hostname="redacted"` and `<repo>` |
 | C6 | Defect report claims for TC14 faulty behaviour | The test stops at its first assertion, so the "50 credits after retry" figure was derived, not measured | Self-check while drafting | Measured it with a script before stating it: faulty attempt 1 = FAILED/20, retry = 50 |
 | C7 | `zoneinfo("Europe/London")` in TC07 | Windows Python has no system tz database, so the test would fail for a Windows reviewer | Known platform behaviour | Pinned `tzdata` in `requirements.txt`; TC07 also asserts the +01:00 offset so a wrong tz database fails loudly |
-| C8 | Mutation script anchors written with `
-` line endings | `git add` warned files would be checked out as CRLF on Windows, so the multi-line M4 anchor would not match and the script would abort for a Windows reviewer | Git line-ending warning | Added `.gitattributes` (`eol=lf`), and the script normalises CRLF before matching. Re-verified from a fresh clone |
+| C8 | Mutation script anchors written assuming LF line endings | `git add` warned files would be checked out as CRLF on Windows, so the multi-line M4 anchor would not match and the script would abort for a Windows reviewer | Git line-ending warning | Added `.gitattributes` (`eol=lf`), and the script normalises CRLF before matching. Re-verified from a fresh clone |
 
 ## Interpretation decisions flagged for human confirmation
 - **A4 window reading.** "Previous Monday 00:00 through the following Monday 00:00" was read as the last *complete* week (run 10-13 → [10-05, 10-12)). The other possible reading, "Monday just gone to next Monday", would include future time, so it was rejected.
