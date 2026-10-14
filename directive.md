@@ -60,7 +60,7 @@ passes against the corrected implementation**, and that runs as a release gate i
 - [x] Mutation check: no unexpected survivors
 - [x] Defect report and release checklist written
 - [x] CI run green for `release-gate` and expected-fail confirmed for `prove-regression` ([run](https://github.com/Praveen630330/rewards-settlement-quest/actions/runs/38529080073))
-- [ ] Fresh-clone run by the candidate; candidate verification table in `ai-log.md` completed
+- [ ] Fresh-clone run by the candidate; candidate verification (appendix E) completed
 
 ---
 
@@ -129,7 +129,22 @@ Nine corrections are logged with how each was found. The most important:
 - **C3.** The M2 survivor was analysed rather than hidden.
 - **C6.** One faulty-build figure was measured before it was stated, rather than assumed.
 
-Full log: [docs/ai-log.md](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/ai-log.md).
+Full log of AI work and corrections: [docs/ai-log.md](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/ai-log.md).
+
+#### Candidate verification (done by hand by the candidate, not by AI)
+Each expected value was recomputed from R1–R6 without looking at the test output first, then compared with the code and results.
+
+| # | Check | Done | My notes |
+|---|---|---|---|
+| V1 | Window for run 2026-10-13 09:00Z is [2026-10-05 00:00Z, 2026-10-12 00:00Z) | ☐ | {{V1_NOTES}} |
+| V2 | TC05, TC06 and TC07 UTC conversions (SAST +02:00, BST +01:00) | ☐ | {{V2_NOTES}} |
+| V3 | TC13 faulty result is 50 credits (walked through the faulty loop by hand) | ☐ | {{V3_NOTES}} |
+| V4 | TC17, TC18 and TC19 faulty results (20 credits, 20 credits, FAILED status) | ☐ | {{V4_NOTES}} |
+| V5 | `settlement_faulty.py` vs `settlement_fixed.py`: the only behavioural difference is DEF-001 | ☐ | {{V5_NOTES}} |
+| V6 | Fresh clone from GitHub, new venv: faulty 8 failed / 12 passed, fixed 20 passed, mutation 6/7 | ☐ | {{V6_NOTES}} |
+
+#### My own corrections, rejections and decisions
+{{CANDIDATE_CORRECTIONS}}
 
 ### F. Limitations and remaining gaps
 1. The ledger and outbox are in memory. There are no real transactions, no concurrent runs, and no crash between payout and outbox write.

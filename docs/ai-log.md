@@ -32,14 +32,5 @@
 - **A1 naive timestamps** reject the whole run rather than skipping the one task. That's a fail-closed choice: no money moves on suspect data.
 - **A7 conflicting duplicate** (same `task_id`, different users): the first occurrence wins. That's the minimum R4 requires. A fail-closed alternative is listed as a gap in `directive.md`.
 
-## Candidate verification — TO BE COMPLETED BY PRAVEEN (do not submit with blanks)
-Recompute each expected value by hand from R1–R6, then tick.
-
-| Check | Done | Notes |
-|---|---|---|
-| Window for run 2026-10-13 09:00Z = [10-05 00:00Z, 10-12 00:00Z) | ☐ | |
-| TC05/06/07 UTC conversions (SAST +2, BST +1) | ☐ | |
-| TC13 faulty actual = 50 (walk through the loop by hand) | ☐ | |
-| Read `settlement_faulty.py` vs `settlement_fixed.py`: the only behavioural difference is DEF-001 | ☐ | |
-| Ran `pytest --impl=faulty` and `--impl=fixed` personally on a fresh clone | ☐ | |
-| Anything you changed, rejected or disagreed with (your own corrections) | ☐ | |
+## Candidate verification
+The candidate's own hand checks and corrections are recorded in [`directive.md` appendix E](../directive.md#e-ai-contribution-and-corrections), so they sit in a required submission file. This log covers the AI's work only.
