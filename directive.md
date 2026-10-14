@@ -1,7 +1,7 @@
 # directive.md — Prevent double payout on settlement retry (final)
 
 > Developed from `intent.md`. Synthetic assessment scenario: no live system, real money or real users.
-> Repository (private, reviewer access granted): **{{REPO}}**
+> Repository (private, reviewer access granted): **https://github.com/Praveen630330/rewards-settlement-quest**
 
 ## 1. Objective
 Make sure a weekly rewards settlement **never pays a task twice and never loses a payout** when a run is retried
@@ -46,7 +46,7 @@ passes against the corrected implementation**, and that runs as a release gate i
 6. Synthetic data only. No secrets, hostnames or personal data in the repo.
 
 ## 5. Completion criteria
-- [x] 17 cases, with expected values derived from R1–R6 ([test-cases.md]({{REPO}}/blob/main/docs/test-cases.md))
+- [x] 17 cases, with expected values derived from R1–R6 ([test-cases.md](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/test-cases.md))
 - [x] Faulty build: 5 regression cases fail; fixed build: 17/17 pass (local evidence)
 - [x] Mutation check: no unexpected survivors
 - [x] Defect report and release checklist written
@@ -60,22 +60,22 @@ passes against the corrected implementation**, and that runs as a release gate i
 ### A. Artefact links
 | Artefact | Link |
 |---|---|
-| Runnable test project | {{REPO}} |
-| Settlement code: faulty / fixed | [settlement_faulty.py]({{REPO}}/blob/main/src/rewards/settlement_faulty.py) · [settlement_fixed.py]({{REPO}}/blob/main/src/rewards/settlement_fixed.py) |
-| Test suite (17 cases) | [tests/test_settlement.py]({{REPO}}/blob/main/tests/test_settlement.py) |
-| Cases and results table | [docs/test-cases.md]({{REPO}}/blob/main/docs/test-cases.md) |
-| Flow map and assumptions | [docs/flow.md]({{REPO}}/blob/main/docs/flow.md) |
-| Defect / root-cause report | [docs/defect-report.md]({{REPO}}/blob/main/docs/defect-report.md) |
-| Release-readiness checklist | [docs/release-checklist.md]({{REPO}}/blob/main/docs/release-checklist.md) |
-| AI collaboration log | [docs/ai-log.md]({{REPO}}/blob/main/docs/ai-log.md) |
-| Local evidence (pytest output, JUnit, mutation, demo) | [evidence/]({{REPO}}/tree/main/evidence) |
-| CI workflow | [.github/workflows/regression.yml]({{REPO}}/blob/main/.github/workflows/regression.yml) |
+| Runnable test project | https://github.com/Praveen630330/rewards-settlement-quest |
+| Settlement code: faulty / fixed | [settlement_faulty.py](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/src/rewards/settlement_faulty.py) · [settlement_fixed.py](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/src/rewards/settlement_fixed.py) |
+| Test suite (17 cases) | [tests/test_settlement.py](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/tests/test_settlement.py) |
+| Cases and results table | [docs/test-cases.md](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/test-cases.md) |
+| Flow map and assumptions | [docs/flow.md](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/flow.md) |
+| Defect / root-cause report | [docs/defect-report.md](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/defect-report.md) |
+| Release-readiness checklist | [docs/release-checklist.md](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/release-checklist.md) |
+| AI collaboration log | [docs/ai-log.md](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/ai-log.md) |
+| Local evidence (pytest output, JUnit, mutation, demo) | [evidence/](https://github.com/Praveen630330/rewards-settlement-quest/tree/main/evidence) |
+| CI workflow | [.github/workflows/regression.yml](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/.github/workflows/regression.yml) |
 | CI run (release-gate + prove-regression) | {{CI_RUN_URL}} |
 | Loom (≤ 5 min) | {{LOOM_URL}} |
 
 ### B. How to reproduce (about 2 minutes, Python 3.10 or later)
 ```bash
-git clone {{REPO}}.git && cd rewards-settlement-quest
+git clone https://github.com/Praveen630330/rewards-settlement-quest.git && cd rewards-settlement-quest
 python -m venv .venv
 # Windows: .venv\Scripts\activate    macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
@@ -98,7 +98,7 @@ python scripts/mutation_check.py        # expect: 6/7 killed, no unexpected surv
 Local results were captured on 2026-10-14 with Python 3.14.3 on Windows, in `evidence/`. The JUnit hostname and local paths are redacted.
 
 ### D. Release-readiness decision
-- **GO** to merge the fix into the reference implementation, once the CI run above is green. The evidence is G1, G2, G4 and G5 in the [checklist]({{REPO}}/blob/main/docs/release-checklist.md).
+- **GO** to merge the fix into the reference implementation, once the CI run above is green. The evidence is G1, G2, G4 and G5 in the [checklist](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/release-checklist.md).
 - **NO-GO** for a production-like rollout until three things are in place:
   - a real DB unique constraint on `task_id`, with a test of two concurrent runs
   - payout and outbox written atomically in one transaction, with a crash-consistency test
@@ -118,7 +118,7 @@ Eight corrections are logged with how each was found. The most important:
 - **C3.** The M2 survivor was analysed rather than hidden.
 - **C6.** One faulty-build figure was measured before it was stated, rather than assumed.
 
-Full log: [docs/ai-log.md]({{REPO}}/blob/main/docs/ai-log.md).
+Full log: [docs/ai-log.md](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/ai-log.md).
 
 ### F. Limitations and remaining gaps
 1. The ledger and outbox are in memory. There are no real transactions, no concurrent runs, and no crash between payout and outbox write.
