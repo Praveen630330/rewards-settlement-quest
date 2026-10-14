@@ -11,7 +11,7 @@
 | Failure choice | Reviewed the ranking walk-through and **chose Failure A** | Proposed criteria, weights and initial scores (judgement, not data) |
 | Code & tests | Reviews, runs and owns the result (see the verification section below) | Wrote the fixture, faulty/fixed builds, 17 tests, mutation check, demo and CI workflow |
 | Docs | Final edits, Loom recording, submission | Drafted docs, intent and directive |
-| Repo & conventions | Chose a personal private repo, personal commit identity, and the hard rule: short commit messages with no AI co-author attribution | Created the repo via the GitHub API, rewrote the unpushed history to match, and added `AGENTS.md`, `CLAUDE.md` and the `refresh-evidence` skill |
+| Repo & conventions | Chose a personal private repo, personal commit identity, and the hard rule: short commit messages with no AI co-author attribution | Created the repo via the GitHub API, rewrote the unpushed history to match, and wrote local-only agent guide files. At the candidate's request, these were later removed from the repo and its history and git-ignored |
 
 ## Corrections and rejections made during the session
 | # | What the AI first produced | Problem found | How it was found | Correction |

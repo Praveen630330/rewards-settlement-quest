@@ -4,3 +4,8 @@ __pycache__/
 .pytest_cache/
 junit-*.xml
 !evidence/junit-*.xml
+
+# Local-only agent context (kept out of the repo)
+AGENTS.md
+CLAUDE.md
+.claude/
