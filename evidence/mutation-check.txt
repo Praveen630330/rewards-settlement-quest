@@ -1,18 +1,24 @@
-# Captured 2026-10-14T06:55:07Z
+# Captured 2026-10-14T07:32:54Z
 KILLED   M1 no idempotency key (plain insert)
            caught by test_tc11_rerun_after_successful_run_pays_and_notifies_nothing_new
            caught by test_tc13_retry_after_notification_failure_does_not_pay_twice
            caught by test_tc14_payout_failure_is_not_notified_and_retry_pays_it_once
+           caught by test_tc17_task_resent_next_week_with_new_in_window_timestamp_is_not_paid_again
+           caught by test_tc19_payout_and_notification_failures_in_one_run_are_both_reported_and_retry_settles_once
 SURVIVED M2 input de-duplication removed [equivalent - expected to survive]
 KILLED   M3 notification failure aborts the run
            caught by test_tc12_notification_failure_keeps_all_payouts_and_leaves_notification_pending
            caught by test_tc13_retry_after_notification_failure_does_not_pay_twice
+           caught by test_tc19_payout_and_notification_failures_in_one_run_are_both_reported_and_retry_settles_once
 KILLED   M4 notification enqueued before payout is recorded
            caught by test_tc14_payout_failure_is_not_notified_and_retry_pays_it_once
+           caught by test_tc19_payout_and_notification_failures_in_one_run_are_both_reported_and_retry_settles_once
 KILLED   M5 outbox never marks sent (re-notify on retry)
            caught by test_tc11_rerun_after_successful_run_pays_and_notifies_nothing_new
            caught by test_tc13_retry_after_notification_failure_does_not_pay_twice
            caught by test_tc14_payout_failure_is_not_notified_and_retry_pays_it_once
+           caught by test_tc17_task_resent_next_week_with_new_in_window_timestamp_is_not_paid_again
+           caught by test_tc19_payout_and_notification_failures_in_one_run_are_both_reported_and_retry_settles_once
 KILLED   M6 upper boundary inclusive (<= end)
            caught by test_tc03_upper_boundary_monday_0000_utc_is_excluded_and_paid_next_week
 KILLED   M7 naive timestamps silently treated as UTC

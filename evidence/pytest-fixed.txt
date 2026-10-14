@@ -1,4 +1,4 @@
-# Captured 2026-10-14T06:55:06Z on MINGW64_NT-10.0-26200, Python 3.14.3
+# Captured 2026-10-14T07:32:54Z, Python 3.14.3
 # Command: python -m pytest --impl=fixed -v
 ============================= test session starts =============================
 platform win32 -- Python 3.14.3, pytest-8.3.3, pluggy-1.6.0 -- <repo>\.venv\Scripts\python.exe
@@ -6,26 +6,29 @@ settlement implementation under test: fixed
 rootdir: <repo>
 configfile: pyproject.toml
 testpaths: tests
-collecting ... collected 17 items
+collecting ... collected 20 items
 
 tests/test_settlement.py::test_tc00_window_is_previous_monday_to_monday_derived_from_scheduled_run PASSED [  5%]
-tests/test_settlement.py::test_tc16_window_rejects_run_that_is_not_tuesday_0900_utc PASSED [ 11%]
-tests/test_settlement.py::test_tc01_happy_path_three_tasks_pay_30_and_notify_each PASSED [ 17%]
-tests/test_settlement.py::test_tc02_lower_boundary_monday_0000_utc_is_included PASSED [ 23%]
-tests/test_settlement.py::test_tc03_upper_boundary_monday_0000_utc_is_excluded_and_paid_next_week PASSED [ 29%]
-tests/test_settlement.py::test_tc04_last_microsecond_before_upper_boundary_is_included PASSED [ 35%]
-tests/test_settlement.py::test_tc05_sast_local_monday_0130_is_sunday_2330_utc_and_included PASSED [ 41%]
-tests/test_settlement.py::test_tc06_sast_local_monday_0100_is_sunday_2300_utc_previous_week_and_excluded PASSED [ 47%]
-tests/test_settlement.py::test_tc07_london_bst_monday_0030_is_sunday_2330_utc_and_included PASSED [ 52%]
-tests/test_settlement.py::test_tc08_timestamp_without_timezone_rejects_run_before_any_payout PASSED [ 58%]
-tests/test_settlement.py::test_tc09_non_completed_task_in_window_is_not_paid PASSED [ 64%]
-tests/test_settlement.py::test_tc15_previous_week_tasks_resent_in_next_feed_are_not_paid_again PASSED [ 70%]
-tests/test_settlement.py::test_tc10_duplicate_task_id_in_input_is_paid_once PASSED [ 76%]
-tests/test_settlement.py::test_tc11_rerun_after_successful_run_pays_and_notifies_nothing_new PASSED [ 82%]
-tests/test_settlement.py::test_tc12_notification_failure_keeps_all_payouts_and_leaves_notification_pending PASSED [ 88%]
-tests/test_settlement.py::test_tc13_retry_after_notification_failure_does_not_pay_twice PASSED [ 94%]
-tests/test_settlement.py::test_tc14_payout_failure_is_not_notified_and_retry_pays_it_once PASSED [100%]
+tests/test_settlement.py::test_tc16_window_rejects_run_that_is_not_tuesday_0900_utc PASSED [ 10%]
+tests/test_settlement.py::test_tc01_happy_path_three_tasks_pay_30_and_notify_each PASSED [ 15%]
+tests/test_settlement.py::test_tc02_lower_boundary_monday_0000_utc_is_included PASSED [ 20%]
+tests/test_settlement.py::test_tc03_upper_boundary_monday_0000_utc_is_excluded_and_paid_next_week PASSED [ 25%]
+tests/test_settlement.py::test_tc04_last_microsecond_before_upper_boundary_is_included PASSED [ 30%]
+tests/test_settlement.py::test_tc05_sast_local_monday_0130_is_sunday_2330_utc_and_included PASSED [ 35%]
+tests/test_settlement.py::test_tc06_sast_local_monday_0100_is_sunday_2300_utc_previous_week_and_excluded PASSED [ 40%]
+tests/test_settlement.py::test_tc07_london_bst_monday_0030_is_sunday_2330_utc_and_included PASSED [ 45%]
+tests/test_settlement.py::test_tc08_timestamp_without_timezone_rejects_run_before_any_payout PASSED [ 50%]
+tests/test_settlement.py::test_tc09_non_completed_task_in_window_is_not_paid PASSED [ 55%]
+tests/test_settlement.py::test_tc15_previous_week_tasks_resent_in_next_feed_are_not_paid_again PASSED [ 60%]
+tests/test_settlement.py::test_tc10_duplicate_task_id_in_input_is_paid_once PASSED [ 65%]
+tests/test_settlement.py::test_tc11_rerun_after_successful_run_pays_and_notifies_nothing_new PASSED [ 70%]
+tests/test_settlement.py::test_tc12_notification_failure_keeps_all_payouts_and_leaves_notification_pending PASSED [ 75%]
+tests/test_settlement.py::test_tc13_retry_after_notification_failure_does_not_pay_twice PASSED [ 80%]
+tests/test_settlement.py::test_tc14_payout_failure_is_not_notified_and_retry_pays_it_once PASSED [ 85%]
+tests/test_settlement.py::test_tc17_task_resent_next_week_with_new_in_window_timestamp_is_not_paid_again PASSED [ 90%]
+tests/test_settlement.py::test_tc18_same_task_id_for_two_users_in_one_feed_pays_first_occurrence_once PASSED [ 95%]
+tests/test_settlement.py::test_tc19_payout_and_notification_failures_in_one_run_are_both_reported_and_retry_settles_once PASSED [100%]
 
 - generated xml file: <repo>\evidence\junit-fixed.xml -
-============================= 17 passed in 0.43s ==============================
+============================= 20 passed in 0.11s ==============================
 # pytest exit code: 0

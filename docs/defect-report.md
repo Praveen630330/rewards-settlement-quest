@@ -11,7 +11,7 @@
 | Severity | **S1 – Critical** |
 | Priority | **P1 – block release** |
 | Rules violated | R4 (task paid at most once), R5 (notify only after successful payout), R6 (notification failure never reverses/repeats a payout) |
-| Status | Fixed in reference build; regression tests TC10–TC14 in CI |
+| Status | Fixed in reference build; regression tests TC10–TC14 and TC17–TC19 in CI |
 
 ## Summary
 When a notification fails part-way through a settlement run, the whole run is marked FAILED. The retry then
@@ -39,11 +39,14 @@ Related symptoms from the same root cause (all measured, see `docs/test-cases.md
 - Duplicate `task_id` in a single feed → 20 credits instead of 10 (TC10).
 - Re-running a run that *succeeded* → 60 credits instead of 30 (TC11).
 - Ledger failure on T3 → whole run FAILED; retry pays T1 and T2 again → 50 credits (TC14).
+- A task re-sent in the next week's feed with a new in-window timestamp → paid again, 20 credits instead of 10 (TC17).
+- The same `task_id` for two users in one feed → both paid, 20 credits instead of 10 (TC18).
+- Payout failure on T3 plus notification failure on T2 → whole run FAILED instead of reporting both errors (TC19).
 
 ## Evidence
 - `evidence/demo.txt` — side-by-side faulty vs fixed run of the scenario.
-- `evidence/pytest-faulty.txt` — 5 failed / 12 passed; e.g. `AssertionError: expected 30 credits, got 50` (TC13).
-- `evidence/pytest-fixed.txt` — 17 passed.
+- `evidence/pytest-faulty.txt` — 8 failed / 12 passed; e.g. `AssertionError: expected 30 credits, got 50` (TC13).
+- `evidence/pytest-fixed.txt` — 20 passed.
 - `evidence/junit-*.xml` — machine-readable results.
 - GitHub Actions run — see the links in `directive.md`.
 
@@ -70,8 +73,8 @@ Item 3 is not a bug by itself. It is the trigger that turns (1) and (2) into a f
 ## Release checks that block this failure
 | Check | Blocks |
 |---|---|
-| CI `release-gate`: full suite on the candidate build must be 17/17 | Any return of double-pay, notify-before-pay or a boundary regression |
-| CI `release-gate`: at least 5 `regression_a` cases collected and not skipped | Someone deleting or skipping the guard tests |
+| CI `release-gate`: full suite on the candidate build must be 20/20 | Any return of double-pay, notify-before-pay or a boundary regression |
+| CI `release-gate`: at least 8 `regression_a` cases collected and not skipped | Someone deleting or skipping the guard tests |
 | CI `release-gate`: mutation check, no unexpected survivors | Weakened assertions that would let partial fixes through |
 | CI `prove-regression`: suite must FAIL on the faulty build | Tests that silently stop exercising the defect |
 | Pre-release reconciliation (manual/scripted): `sum(credits) == 10 × count(distinct task_id)` per run | Double-pay paths the fixture doesn't model (see gaps) |

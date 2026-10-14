@@ -176,3 +176,40 @@ def test_tc14_payout_failure_is_not_notified_and_retry_pays_it_once(settle, ctx)
     assert ctx.ledger.total_credits() == 30, f"expected 30 credits, got {ctx.ledger.total_credits()}"
     assert_paid_once_each(ctx, ["T1", "T2", "T3"])
     assert_notified_once_each(ctx, ["T1", "T2", "T3"])
+
+
+@pytest.mark.regression_a
+def test_tc17_task_resent_next_week_with_new_in_window_timestamp_is_not_paid_again(settle, ctx):
+    settle([task("T1", datetime(2026, 10, 6, 8, 15, tzinfo=UTC))], RUN, ctx)
+    resent = task("T1", datetime(2026, 10, 14, 10, 0, tzinfo=UTC))  # same task_id, inside the 10-20 window
+    settle([resent], NEXT_RUN, ctx)
+    assert ctx.ledger.total_credits() == 10, f"expected 10 credits, got {ctx.ledger.total_credits()}"
+    assert_paid_once_each(ctx, ["T1"])
+    assert_notified_once_each(ctx, ["T1"])
+
+
+@pytest.mark.regression_a
+def test_tc18_same_task_id_for_two_users_in_one_feed_pays_first_occurrence_once(settle, ctx):
+    when = datetime(2026, 10, 6, 8, 15, tzinfo=UTC)
+    settle([task("T1", when, user_id="user-a"), task("T1", when, user_id="user-b")], RUN, ctx)
+    assert ctx.ledger.total_credits() == 10, f"expected 10 credits, got {ctx.ledger.total_credits()}"
+    assert [r.user_id for r in ctx.ledger.records] == ["user-a"], "assumption A7: first occurrence wins"
+    assert [n.user_id for n in ctx.notifier.sent] == ["user-a"]
+
+
+@pytest.mark.regression_a
+def test_tc19_payout_and_notification_failures_in_one_run_are_both_reported_and_retry_settles_once(settle, ctx):
+    ctx.ledger.fail_for = {"T3"}
+    ctx.notifier.fail_for = {"T2"}
+    first = settle(three_tasks(), RUN, ctx)
+    assert first.status == RunStatus.COMPLETED_WITH_PAYOUT_ERRORS, f"got {first.status}"
+    assert first.payout_errors == ["T3"]
+    assert first.notification_errors == ["T2"]
+    assert ctx.ledger.total_credits() == 20, f"expected 20 credits, got {ctx.ledger.total_credits()}"
+    assert ctx.notifier.sent_count("T3") == 0, "R5: no notification without a successful payout"
+    ctx.ledger.fail_for = set()  # both recover
+    ctx.notifier.fail_for = set()
+    settle(three_tasks(), RUN, ctx)
+    assert ctx.ledger.total_credits() == 30, f"expected 30 credits, got {ctx.ledger.total_credits()}"
+    assert_paid_once_each(ctx, ["T1", "T2", "T3"])
+    assert_notified_once_each(ctx, ["T1", "T2", "T3"])

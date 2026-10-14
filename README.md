@@ -12,8 +12,8 @@ python -m venv .venv
 pip install -r requirements.txt
 
 python demo.py                       # faulty vs fixed, side by side
-python -m pytest --impl=faulty       # 5 failed, 12 passed (the regression cases fail)
-python -m pytest --impl=fixed        # 17 passed
+python -m pytest --impl=faulty       # 8 failed, 12 passed (the regression cases fail)
+python -m pytest --impl=fixed        # 20 passed
 python scripts/mutation_check.py     # proves the suite catches partial fixes
 ```
 `--impl` defaults to `fixed`, or to the `SETTLEMENT_IMPL` environment variable if set.
@@ -24,7 +24,7 @@ python scripts/mutation_check.py     # proves the suite catches partial fixes
 | `src/rewards/settlement_faulty.py` | Reference faulty build (reproduces DEF-001) — do not fix |
 | `src/rewards/settlement_fixed.py` | Corrected build: idempotent payout + notification outbox |
 | `src/rewards/window.py`, `selection.py` | Window and eligibility rules shared by both builds |
-| `tests/test_settlement.py` | 17 cases; `-m regression_a` selects the DEF-001 guards |
+| `tests/test_settlement.py` | 20 cases; `-m regression_a` selects the DEF-001 guards |
 | `docs/` | Flow map, test cases and results, defect report, release checklist, AI log |
 | `evidence/` | Captured local runs (pytest, JUnit, mutation, demo) |
 | `.github/workflows/regression.yml` | CI: `release-gate` (must pass) + `prove-regression` (faulty must fail) |

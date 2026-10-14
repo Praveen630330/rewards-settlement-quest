@@ -1,6 +1,6 @@
 # AI collaboration log
 
-**Tool:** Claude Code (model: Claude Opus 5.5), used in one working session on 2026-10-14.
+**Tool:** Claude Code (model: Claude Opus 5.5), used in two working sessions on 2026-10-14.
 **Rule for this log:** only events that actually happened. Nothing reconstructed or invented.
 
 ## Who did what
@@ -10,6 +10,7 @@
 | Scenario & stack | Chose the fictional rewards flow, Python + pytest, private GitHub repo + CI | Proposed the options |
 | Failure choice | Reviewed the ranking walk-through and **chose Failure A** | Proposed criteria, weights and initial scores (judgement, not data) |
 | Code & tests | Reviews, runs and owns the result (see the verification section below) | Wrote the fixture, faulty/fixed builds, 17 tests, mutation check, demo and CI workflow |
+| Gap review (session 2) | Asked for a review of the repo against the brief, in plan mode, with clarifying questions instead of assumptions. Chose to add TC17 rather than rewrite TC15; to state account and admin rules as assumptions only, not code ("stick with the actual requirement"); to keep the run-status precedence; and to commit and push directly | Found the gaps, proposed options, wrote TC17–TC19, raised the CI gate to 8 and updated the docs. Chose A7 (first occurrence wins) after the candidate delegated that call to the requirement |
 | Docs | Final edits, Loom recording, submission | Drafted docs, intent and directive |
 | Repo & conventions | Chose a personal private repo, personal commit identity, and the hard rule: short commit messages with no AI co-author attribution | Created the repo via the GitHub API, rewrote the unpushed history to match, and wrote local-only agent guide files. At the candidate's request, these were later removed from the repo and its history and git-ignored |
 
@@ -24,10 +25,12 @@
 | C6 | Defect report claims for TC14 faulty behaviour | The test stops at its first assertion, so the "50 credits after retry" figure was derived, not measured | Self-check while drafting | Measured it with a script before stating it: faulty attempt 1 = FAILED/20, retry = 50 |
 | C7 | `zoneinfo("Europe/London")` in TC07 | Windows Python has no system tz database, so the test would fail for a Windows reviewer | Known platform behaviour | Pinned `tzdata` in `requirements.txt`; TC07 also asserts the +01:00 offset so a wrong tz database fails loudly |
 | C8 | Mutation script anchors written assuming LF line endings | `git add` warned files would be checked out as CRLF on Windows, so the multi-line M4 anchor would not match and the script would abort for a Windows reviewer | Git line-ending warning | Added `.gitattributes` (`eol=lf`), and the script normalises CRLF before matching. Re-verified from a fresh clone |
+| C9 | TC15 presented as the cross-run duplicate guard for R4 ("across … later runs") | It passes on the faulty build too, because the window filter drops last week's tasks, so it never exercised a cross-run double payout | Gap review the candidate asked for in session 2: re-read each test against R1–R6 and its faulty-build result | Kept TC15 as a feed re-send guard. Added TC17 (same `task_id` re-sent with an in-window timestamp next week), which fails on faulty (20 credits) and passes on fixed |
 
 ## Interpretation decisions flagged for human confirmation
 - **A4 window reading.** "Previous Monday 00:00 through the following Monday 00:00" was read as the last *complete* week (run 10-13 → [10-05, 10-12)). The other possible reading, "Monday just gone to next Monday", would include future time, so it was rejected.
 - **A1 naive timestamps** reject the whole run rather than skipping the one task. That's a fail-closed choice: no money moves on suspect data.
+- **A7 conflicting duplicate** (same `task_id`, different users): the first occurrence wins. That's the minimum R4 requires. A fail-closed alternative is listed as a gap in `directive.md`.
 
 ## Candidate verification — TO BE COMPLETED BY PRAVEEN (do not submit with blanks)
 Recompute each expected value by hand from R1–R6, then tick.

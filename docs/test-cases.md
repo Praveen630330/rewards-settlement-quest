@@ -23,8 +23,12 @@
 | 12 | **Partial failure** (notification) | R5 R6 | Notifier fails for T2 | 30 credits kept; T2 notification pending; status COMPLETED_WITH_NOTIFICATION_ERRORS | **FAIL** — 20 credits, status FAILED, T3 never paid | PASS |
 | 13 | **Retry after partial failure — core DEF-001** | R4 R5 R6 | TC12, then retry with notifier healthy | 30 credits; each task paid once and notified once; retry status COMPLETED | **FAIL** — 50 credits (T1, T2 paid twice) | PASS |
 | 14 | Partial failure (payout) + retry | R4 R5 | Ledger fails for T3, then retry | Attempt 1: COMPLETED_WITH_PAYOUT_ERRORS, T3 not paid **and not notified**; retry: 30 credits, each once | **FAIL** — attempt 1 status FAILED; measured retry total 50 credits | PASS |
+| 17 | **Duplicate across runs** (re-sent with new timestamp) | R4 | 10-13 run with T1 (10-06); 10-20 run with T1 again, completed 10-14 | 10 credits total; T1 paid once, notified once | **FAIL** — 20 credits | PASS |
+| 18 | **Duplicate input** (conflicting users) | R4 A7 | T1 for user-a and T1 for user-b in one feed | 10 credits; one payout and one notification, both for user-a (first occurrence wins) | **FAIL** — 20 credits | PASS |
+| 19 | **Partial failure** (payout + notification) + retry | R4 R5 R6 | Ledger fails for T3 and notifier fails for T2, then retry | Attempt 1: COMPLETED_WITH_PAYOUT_ERRORS, payout_errors=[T3], notification_errors=[T2], 20 credits, T3 not notified; retry: 30 credits, each paid and notified once | **FAIL** — attempt 1 status FAILED | PASS |
 
-**Totals:** 17 cases. Fixed build 17/17 pass. Faulty build 12 pass / 5 fail — exactly the five `regression_a` cases.
+**Totals:** 20 cases. Fixed build 20/20 pass. Faulty build 12 pass / 8 fail — exactly the eight `regression_a` cases.
+TC15 passes on both builds because the window filter drops last week's tasks. TC17 is the case that proves R4 holds across runs.
 The 12 cases that pass on both builds show the faulty build differs only in the DEF-001 behaviour (window,
 timezone and eligibility logic are shared), so the failures point at the defect, not at unrelated noise.
 
@@ -39,10 +43,10 @@ timezone and eligibility logic are shared), so the failures point at the defect,
 
 | Mutant | Result | Caught by |
 |---|---|---|
-| M1 no idempotency key | Killed | TC11, TC13, TC14 |
-| M2 input de-dup removed | Survived — *equivalent*: the ledger key still blocks the duplicate payout | — |
-| M3 notification failure aborts run | Killed | TC12, TC13 |
-| M4 notification enqueued before payout recorded | Killed | TC14 |
-| M5 outbox never marks sent | Killed | TC11, TC13, TC14 |
+| M1 no idempotency key | Killed | TC11, TC13, TC14, TC17, TC19 |
+| M2 input de-dup removed | Survived — *equivalent*: the ledger key still blocks the duplicate payout (including TC18) | — |
+| M3 notification failure aborts run | Killed | TC12, TC13, TC19 |
+| M4 notification enqueued before payout recorded | Killed | TC14, TC19 |
+| M5 outbox never marks sent | Killed | TC11, TC13, TC14, TC17, TC19 |
 | M6 upper boundary inclusive | Killed | TC03 |
 | M7 naive timestamps treated as UTC | Killed | TC08 |

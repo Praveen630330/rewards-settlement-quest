@@ -21,7 +21,7 @@ jobs:
         run: |
           count=$(python -m pytest --impl=fixed -m regression_a --collect-only -q | grep -c "::test_")
           echo "regression_a cases collected: $count"
-          test "$count" -ge 5
+          test "$count" -ge 8
       - name: Mutation check (suite catches partial fixes)
         run: python scripts/mutation_check.py
       - uses: actions/upload-artifact@v4

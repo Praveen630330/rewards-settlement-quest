@@ -2,6 +2,8 @@
 
 > All scenarios, data and scores here are **synthetic or judgement-based**. I have no incident history for this
 > fictional rewards service, and I'm not claiming any. Where I talk about likelihood, it's reasoning, not measurement.
+>
+> **What pre-existed:** nothing. All code, tests and docs were created for this Quest.
 
 ## The flow
 A fictional rewards service settles completed tasks every **Tuesday 09:00 UTC**. Each run covers the window
@@ -38,7 +40,7 @@ I scored each candidate failure from 1 to 5 on four criteria. Higher means more 
 
 ## Evidence
 - A reproduction against a synthetic faulty reference build: one notification failure plus one retry takes the ledger to **50 credits instead of 30** (`evidence/demo.txt`, TC13).
-- Five automated cases fail on the faulty build and pass on the fixed build. A mutation check shows the suite also catches partial fixes.
+- Eight automated cases fail on the faulty build and pass on the fixed build. A mutation check shows the suite also catches partial fixes.
 - There's no production data or incident record. This is a reasoned risk, demonstrated in a fixture.
 
 ## Intended value
@@ -47,6 +49,6 @@ A release gate that makes double-payment on retry **impossible to ship unnoticed
 ## Non-goals
 - Testing or touching any live financial or notification system.
 - Real database transactions, concurrency between parallel runs, or crash consistency. These are listed as gaps.
-- Account lifecycle changes (closed or suspended users) and admin overrides.
+- Implementing account lifecycle changes (closed or suspended users) or admin settings (rate changes, pauses, manual re-runs). They're stated as explicit assumptions A2 and A6 in `directive.md`, not built.
 - Fixing all five failures in depth. Only A is solved in depth; B and C are covered by test cases.
 - Performance or volume testing.
