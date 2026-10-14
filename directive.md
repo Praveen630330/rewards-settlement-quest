@@ -50,7 +50,7 @@ passes against the corrected implementation**, and that runs as a release gate i
 - [x] Faulty build: 5 regression cases fail; fixed build: 17/17 pass (local evidence)
 - [x] Mutation check: no unexpected survivors
 - [x] Defect report and release checklist written
-- [ ] CI run green for `release-gate` and expected-fail confirmed for `prove-regression` (link below)
+- [x] CI run green for `release-gate` and expected-fail confirmed for `prove-regression` ([run](https://github.com/Praveen630330/rewards-settlement-quest/actions/runs/38526119660))
 - [ ] Fresh-clone run by the candidate; candidate verification table in `ai-log.md` completed
 
 ---
@@ -70,7 +70,7 @@ passes against the corrected implementation**, and that runs as a release gate i
 | AI collaboration log | [docs/ai-log.md](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/ai-log.md) |
 | Local evidence (pytest output, JUnit, mutation, demo) | [evidence/](https://github.com/Praveen630330/rewards-settlement-quest/tree/main/evidence) |
 | CI workflow | [.github/workflows/regression.yml](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/.github/workflows/regression.yml) |
-| CI run (release-gate + prove-regression) | {{CI_RUN_URL}} |
+| CI run (release-gate + prove-regression) | [Run 38526119660](https://github.com/Praveen630330/rewards-settlement-quest/actions/runs/38526119660) — both jobs succeeded (2026-10-14) |
 | Loom (≤ 5 min) | {{LOOM_URL}} |
 
 ### B. How to reproduce (about 2 minutes, Python 3.10 or later)
@@ -93,12 +93,12 @@ python scripts/mutation_check.py        # expect: 6/7 killed, no unexpected surv
 | Fixed build | `pytest --impl=fixed -v` | **17 passed**, exit 0 |
 | Mutation check | `python scripts/mutation_check.py` | **6/7 killed**. M2 survived, as expected: it's equivalent because the ledger key still enforces R4 |
 | Demo | `python demo.py` | Faulty: attempt 1 FAILED with 20 credits, then the retry gives **50**. Fixed: 30, then the retry gives **30** |
-| CI | GitHub Actions | {{CI_RESULT}} |
+| CI | GitHub Actions | Ubuntu, Python 3.12: `release-gate` **17 passed**, 5 `regression_a` collected, mutation 6/7 with no unexpected survivors; `prove-regression` **5 failed, 12 deselected** on faulty → job reports "OK: regression suite rejects the faulty build" |
 
 Local results were captured on 2026-10-14 with Python 3.14.3 on Windows, in `evidence/`. The JUnit hostname and local paths are redacted.
 
 ### D. Release-readiness decision
-- **GO** to merge the fix into the reference implementation, once the CI run above is green. The evidence is G1, G2, G4 and G5 in the [checklist](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/release-checklist.md).
+- **GO** to merge the fix into the reference implementation, now that the CI run above is green. The evidence is G1, G2, G4 and G5 in the [checklist](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/release-checklist.md).
 - **NO-GO** for a production-like rollout until three things are in place:
   - a real DB unique constraint on `task_id`, with a test of two concurrent runs
   - payout and outbox written atomically in one transaction, with a crash-consistency test

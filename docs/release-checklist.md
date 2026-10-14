@@ -7,16 +7,16 @@
 |---|---|---|---|
 | G1 | Full suite passes on the fixed build | `pytest --impl=fixed` → `evidence/pytest-fixed.txt` | ✅ 17/17 passed (local, Windows, Py 3.14.3) |
 | G2 | Regression tests fail on the faulty build (the tests really detect the defect) | `pytest --impl=faulty` → `evidence/pytest-faulty.txt` | ✅ TC10–TC14 fail, all other 12 pass |
-| G3 | At least 5 `regression_a` cases present and not skipped | CI step "Regression cases must exist" | ✅ 5 collected locally; ☐ CI run to be confirmed |
+| G3 | At least 5 `regression_a` cases present and not skipped | CI step "Regression cases must exist" | ✅ 5 collected locally and in [CI](https://github.com/Praveen630330/rewards-settlement-quest/actions/runs/38526119660) |
 | G4 | No unexpected mutant survivors | `scripts/mutation_check.py` → `evidence/mutation-check.txt` | ✅ 6/7 killed; M2 survivor is equivalent (explained) |
 | G5 | Mandatory case types covered: happy, cut-off, timezone, duplicate, retry, partial failure | `docs/test-cases.md` | ✅ |
-| G6 | CI green on `release-gate` and expected-fail confirmed on `prove-regression` | GitHub Actions | ☐ **Pending** — needs push to the private repo; link to be added to `directive.md` |
+| G6 | CI green on `release-gate` and expected-fail confirmed on `prove-regression` | GitHub Actions | ✅ [Run 38526119660](https://github.com/Praveen630330/rewards-settlement-quest/actions/runs/38526119660): release-gate 17 passed; prove-regression 5 failed on faulty as required |
 | G7 | Fresh-clone setup works for someone else | Clone → venv → `pip install -r requirements.txt` → `pytest` | ✅ Fresh local clone + new venv on Windows: 5F/12P faulty, 17P fixed, mutation 6/7 (run by AI in-session); ☐ candidate to repeat from GitHub |
 | G8 | No real data, secrets or internal hostnames in the repo | Manual grep; JUnit hostname and local paths redacted in `evidence/` | ✅ |
 | G9 | Required status check / branch protection enforcing G6 | GitHub repo settings | ☐ Recommended; may need a paid GitHub plan for private repos — **not enforced** |
 
 ## Decision
-**GO** — merge the fix into the reference implementation, *once G6 is ticked and the candidate has repeated G7 from GitHub*. Basis: G1, G2, G4 and G5 are evidenced locally, and the fix is narrow (one module) with no change to window or eligibility logic (12 shared cases unchanged).
+**GO** — merge the fix into the reference implementation, *G6 is now confirmed; the candidate still needs to repeat G7 from GitHub*. Basis: G1, G2, G4 and G5 are evidenced locally, and the fix is narrow (one module) with no change to window or eligibility logic (12 shared cases unchanged).
 
 **NO-GO for any production-like rollout** of this design until these are closed:
 1. A real database **unique constraint** on `task_id`, plus a test of two concurrent runs racing on the same task (not modelled by the in-memory ledger).
