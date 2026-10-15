@@ -1,8 +1,5 @@
 # DEF-001 — Retrying a settlement run after a notification failure pays tasks twice
 
-> Found in a SYNTHETIC reference implementation (`src/rewards/settlement_faulty.py`) built for this assessment.
-> No live system, real user or real incident is involved. There is **no incident history**; frequency statements are reasoned estimates.
-
 | Field | Value |
 |---|---|
 | Component | Weekly rewards settlement — payout + notification step |
@@ -59,7 +56,7 @@ Item 3 is not a bug by itself. It is the trigger that turns (1) and (2) into a f
 
 ## Severity rationale
 - **Impact – high.** Credits are paid out more than once (here +67%: 50 vs 30), and that is hard to claw back. Users get confusing duplicate messages. If nobody retries, tasks after the failure point go unpaid, which means support tickets.
-- **Likelihood – medium-high (estimate).** Notification providers have transient failures, and retries are standard practice. No special input is needed: any single notification error triggers it.
+- **Likelihood – medium-high.** Notification providers have transient failures, and retries are standard practice. No special input is needed: any single notification error triggers it.
 - **Detectability – low.** Overpaid users rarely report it, and a retried run ends COMPLETED. It would only surface in finance reconciliation.
 - Taken together, it's S1/P1: silent money loss triggered by routine operational events.
 

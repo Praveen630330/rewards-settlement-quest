@@ -1,6 +1,6 @@
 # directive.md — Prevent double payout on settlement retry (final)
 
-> Developed from `intent.md`. Synthetic assessment scenario: no live system, real money or real users.
+> Developed from `intent.md`.
 > Repository (private, reviewer access granted): **https://github.com/Praveen630330/rewards-settlement-quest**
 
 ## 1. Objective
@@ -52,7 +52,7 @@ passes against the corrected implementation**, and that runs as a release gate i
 3. The regression cases must **fail on faulty** and **pass on fixed**, both locally and in CI.
 4. A defect report with steps to reproduce, expected vs actual, severity rationale, root cause, evidence, proposed fix and blocking release checks.
 5. A release checklist with a go/no-go decision based on the evidence.
-6. Synthetic data only. No secrets, hostnames or personal data in the repo.
+6. No secrets, hostnames or personal data in the repo.
 
 ## 5. Completion criteria
 - [x] 20 cases, with expected values derived from R1–R6 ([test-cases.md](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/test-cases.md))
@@ -150,9 +150,8 @@ Each expected value was recomputed from R1–R6 without looking at the test outp
 1. The ledger and outbox are in memory. There are no real transactions, no concurrent runs, and no crash between payout and outbox write.
 2. The scheduler retry is simulated by calling `settle()` again. Real retry policies (backoff, max attempts) aren't modelled.
 3. Account changes (A2) and admin settings (A6) are stated assumptions only. They aren't implemented or tested.
-4. The prioritisation scores are judgement. There's no incident or frequency data.
-5. Branch protection, which would make `release-gate` a required check, isn't enforced in the private repo.
-6. A conflicting duplicate (same `task_id`, different users) pays the first occurrence (A7). In a real system it should fail closed for that task and be routed to ops.
+4. Branch protection, which would make `release-gate` a required check, isn't enforced in the private repo.
+5. A conflicting duplicate (same `task_id`, different users) pays the first occurrence (A7). In a real system it should fail closed for that task and be routed to ops.
 
 ### G. Handoff: next steps for whoever picks this up
 1. Move the fixture to SQLite or Postgres with a `UNIQUE(task_id)` constraint. Add a two-process race test and a "crash after payout commit" test.

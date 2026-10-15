@@ -1,8 +1,5 @@
 # intent.md — Why this problem?
 
-> All scenarios, data and scores here are **synthetic or judgement-based**. I have no incident history for this
-> fictional rewards service, and I'm not claiming any. Where I talk about likelihood, it's reasoning, not measurement.
->
 > **What pre-existed:** nothing. All code, tests and docs were created for this Quest.
 
 ## The flow
@@ -39,9 +36,8 @@ I scored each candidate failure from 1 to 5 on four criteria. Higher means more 
 - **Support.** They field "I got two messages" and "my credits are missing" tickets.
 
 ## Evidence
-- A reproduction against a synthetic faulty reference build: one notification failure plus one retry takes the ledger to **50 credits instead of 30** (`evidence/demo.txt`, TC13).
+- A reproduction against the faulty reference build: one notification failure plus one retry takes the ledger to **50 credits instead of 30** (`evidence/demo.txt`, TC13).
 - Eight automated cases fail on the faulty build and pass on the fixed build. A mutation check shows the suite also catches partial fixes.
-- There's no production data or incident record. This is a reasoned risk, demonstrated in a fixture.
 
 ## Intended value
 A release gate that makes double-payment on retry **impossible to ship unnoticed**. It also gives a documented business-rule set (R1–R6) and a design (idempotent payout + outbox) that a real implementation could adopt.

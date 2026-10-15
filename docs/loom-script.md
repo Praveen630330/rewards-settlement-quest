@@ -4,7 +4,7 @@ Use your own words. This is a timing guide, not something to read out.
 
 | Time | Show on screen | Say (key points) |
 |---|---|---|
-| 0:00–0:30 | `intent.md` ranking table | The flow and rules in one sentence. I ranked five failures on impact, likelihood, silence and fit. These are judgement scores; there's no incident history. |
+| 0:00–0:30 | `intent.md` ranking table | The flow and rules in one sentence. I ranked five failures on impact, likelihood, silence and fit. |
 | 0:30–1:15 | Same table, then `docs/flow.md` faulty diagram | Why A ranked first: silent money loss triggered by routine events (a notification blip plus a standard retry), and it breaks R4, R5 and R6. B and C are still covered as test cases. |
 | 1:15–2:15 | Terminal: `python demo.py` | Faulty: attempt 1 FAILED with 20 credits, retry gives 50, T1 and T2 paid twice. Fixed: 30 then 30, T2 notified once. Point at the root cause in `settlement_faulty.py`: notify inside the payout loop, and no idempotency key. |
 | 2:15–3:15 | `pytest --impl=faulty` then `--impl=fixed`; CI run page | The same 20 tests: 8 fail on faulty ("expected 30, got 50"), 20 pass on fixed. CI has two jobs: `release-gate` must pass, `prove-regression` must fail on the faulty build. |

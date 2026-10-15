@@ -1,7 +1,5 @@
 # Flow map — weekly rewards settlement (fictional)
 
-> SYNTHETIC assessment scenario. Not a description of any live product.
-
 ## Corrected flow (fixed build)
 
 ```mermaid

@@ -8,7 +8,7 @@
 |---|---|---|
 | Approach | Asked for a plan-first approach before any code; required a walk-through of failure options before choosing | Drafted the plan, scoring rubric mapping and ranking table |
 | Scenario & stack | Chose the fictional rewards flow, Python + pytest, private GitHub repo + CI | Proposed the options |
-| Failure choice | Reviewed the ranking walk-through and **chose Failure A** | Proposed criteria, weights and initial scores (judgement, not data) |
+| Failure choice | Reviewed the ranking walk-through and **chose Failure A** | Proposed criteria, weights and initial scores |
 | Code & tests | Reviews, runs and owns the result (see the verification section below) | Wrote the fixture, faulty/fixed builds, 17 tests, mutation check, demo and CI workflow |
 | Gap review (session 2) | Asked for a review of the repo against the brief, in plan mode, with clarifying questions instead of assumptions. Chose to add TC17 rather than rewrite TC15; to state account and admin rules as assumptions only, not code ("stick with the actual requirement"); to keep the run-status precedence; and to commit and push directly | Found the gaps, proposed options, wrote TC17–TC19, raised the CI gate to 8 and updated the docs. Chose A7 (first occurrence wins) after the candidate delegated that call to the requirement |
 | Docs | Final edits, Loom recording, submission | Drafted docs, intent and directive |

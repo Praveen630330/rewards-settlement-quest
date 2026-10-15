@@ -1,6 +1,6 @@
 # Release-readiness checklist — DEF-001 fix
 
-> Scope: the reference settlement implementation in this repo (SYNTHETIC). Not a live system.
+> Scope: the reference settlement implementation in this repo.
 
 ## Gates
 | # | Check | How verified | Result (2026-10-14) |

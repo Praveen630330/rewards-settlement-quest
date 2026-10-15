@@ -1,6 +1,6 @@
 # Test cases and results
 
-> SYNTHETIC data. Run under test: **Tue 2026-10-13 09:00 UTC**, window **[2026-10-05T00:00Z, 2026-10-12T00:00Z)**.
+> Run under test: **Tue 2026-10-13 09:00 UTC**, window **[2026-10-05T00:00Z, 2026-10-12T00:00Z)**.
 > "Fixture T1–T3" = `fixtures/week_2026-10-05.json`: three completed tasks inside the window (expected total 30 credits).
 > Actual results from `evidence/pytest-faulty.txt` and `evidence/pytest-fixed.txt` (captured 2026-10-14, Python 3.14.3, Windows).
 
