@@ -114,24 +114,12 @@ Local results were captured on 2026-10-14 with Python 3.14.3 on Windows, in `evi
   - an outbox monitor and a weekly reconciliation
 
 ### E. AI contribution and corrections
-Claude (Claude Code, Opus 5.5) drafted the plan, code, tests and docs.
+- **Tool:** Claude Code, used to draft the code, tests and docs.
+- **My part:** I set the scope and rules, chose the failure to solve, made the key decisions, and reviewed and verified the result (below).
+- **Pre-existing work:** none. Everything was built for this Quest.
+- **Corrections:** 9 logged with how each was found, e.g. a mutation test that could never fail was replaced (C2). See [docs/ai-log.md](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/ai-log.md).
 
-**What pre-existed:** nothing. All code, tests and docs were created for this Quest (every commit is dated 2026-10-14).
-
-The candidate's decisions:
-- plan first, before any code
-- the fictional flow and stack
-- choosing Failure A after reviewing the ranking walk-through
-- reviewing and owning the final result
-
-Nine corrections are logged with how each was found. The most important:
-- **C2.** The first M4 mutant was *equivalent*: it could never fail. It was replaced with a real R5 risk (notify before payout), which TC14 now catches.
-- **C3.** The M2 survivor was analysed rather than hidden.
-- **C6.** One faulty-build figure was measured before it was stated, rather than assumed.
-
-Full log of AI work and corrections: [docs/ai-log.md](https://github.com/Praveen630330/rewards-settlement-quest/blob/main/docs/ai-log.md).
-
-#### Candidate verification (done by hand by the candidate, not by AI)
+#### Verification (done by hand)
 Each expected value was recomputed from R1–R6 without looking at the test output first, then compared with the code and results.
 
 | # | Check | Done | My notes |
